@@ -247,7 +247,7 @@ The next time we run the Arduino IDE we have available this model in the hardwar
 <li id="sec-1-3-2-5">Files modified<br/>
 "arduino-1.0.5/libraries/Gkos/Gkos.cpp" This is the modified file <a href="#.-Gkos.cpp">.​/Gkos.cpp</a> 
 And the script arduino a modification of "arduino-1.0.5/libraries/Gkos/examples/gkos_serial01/gkos_serial01.pde"
-became this: <a href="file:///gkos_usb_keyb.ino">/gkos_usb_keyb.ino</a> 
+became this: <a href="./gkos_usb_keyb.ino">./gkos_usb_keyb.ino</a> 
 That is the one we open with the Arduino IDE to compile and install the software.
 
 <p>
