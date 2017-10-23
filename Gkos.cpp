@@ -104,7 +104,7 @@ char* Gkos::entry()
 	// GKOS Reference number based on Chord value
 const static int _gChord2_gRef[] = {0, 1, 2, 15, 3, 27, 19, 46, 4, 42, 36, 16, 33, 28, 20, 47, 5, 35, 59, 17, 32, 29, 21, 48, 7, 8, 9, 44, 10, 41, 38, 56, 6, 34, 31, 18, 43, 30, 22, 49, 23, 24, 25, 58, 26, 60, 40, 62, 11, 12, 13, 37, 14, 39, 45, 63, 50, 51, 52, 54, 53, 55, 57, 61};
 	// Parallel GKOS character sets for lower case, caps, shift (upper case), numbers and symbols
-const static char* _gChar[]={"NULL" , "a" , "u" , "c" , "i" , "e" , "r" , "t" , "h" , "g" , "j" , "n" , "\u0027a" , "b" , "k" , "o" , "p" , "f" , "q" , "s" , "w" , "m" , "v" , "l" , "x" , "y" , "z" , "d"  , "\'u"     , "\'e"    , "\'o"   , "." , "," , "!" , "?" , "-" , "\'" , "\\" , "/" , "ñ"    , "ü"      , "\'i", "_Up", "_Down", "_PgUp", "_PgDn", "_BS", "_Left", "_WLeft", "_Home", " ", "_Right", "_WRight", "_End", "_Enter", "_Tab", "_Esc", "_Del", "_Ins", "_Shift", "_SYMB", "_123abc", "_Ctrl", "_Alt" };
+const static char* _gChar[]={"NULL" , "a" , "u" , "c" , "i" , "e" , "r" , "t" , "h" , "g" , "j" , "n" , "\'a" , "b" , "k" , "o" , "p" , "f" , "q" , "s" , "w" , "m" , "v" , "l" , "x" , "y" , "z" , "d"  , "\'u"     , "\'e"    , "\'o"   , "." , "," , "!" , "?" , "-" , "\'" , "\\" , "/" , "ñ"    , "ü"      , "\'i", "_Up", "_Down", "_PgUp", "_PgDn", "_BS", "_Left", "_WLeft", "_Home", " ", "_Right", "_WRight", "_End", "_Enter", "_Tab", "_Esc", "_Del", "_Ins", "_Shift", "_SYMB", "_123abc", "_Ctrl", "_Alt" };
 
 // SHFT (Shift): (NULL +) only first 41 may differ from lower case 
 const static char* _gSHFT[]={ "NULL" , "A" , "U" , "C" , "I" , "E" , "R" , "T" , "H" , "G" , "J" , "N" , "\'A" , "B" , "K" , "O" , "P" , "F" , "Q" , "S" , "W" , "M" , "V" , "L" , "X" , "Y" , "Z" , "D"  , "\'U"     , "\'E"    , "\'O"   , "." , "," , "¡" , "¿" , "_" , "\'" , "\\" , "/" , "Ñ"    , "Ü"      , "\'I"};
@@ -113,7 +113,7 @@ const static char* _gSHFT[]={ "NULL" , "A" , "U" , "C" , "I" , "E" , "R" , "T" ,
 const static char* _gCAPS[]={ "NULL" , "A" , "U" , "C" , "I" , "E" , "R" , "T" , "H" , "G" , "J" , "N" , "\'A" , "B" , "K" , "O" , "P" , "F" , "Q" , "S" , "W" , "M" , "V" , "L" , "X" , "Y" , "Z" , "D"  , "\'U"     , "\'E"    , "\'O"   , "." , "," , "!" , "?" , "-" , "\'" , "\\" , "/" , "Ñ"    , "Ü"      , "\'I"};
 
 // NUMS: (NULL +) only first 41 may differ from lower case
-const static char* _gNUMS[]={"NULL" , "1" , "2" , "3" , "4" , "5" , "6" , "0" , "7" , "8" , "9" , "#" , "@" , "½" , "&" , "+" , "%" , "^" , "=" , "*" , "$" , "€" , "£" , "(" , "[" , "<" , "{" , ")"  , "]"     , ">"    , "}"   , "." , "," , "|"  , "~" , "-" , "\'" , "\\" , "/" , "μ"    , " ̈" , "ª"};
+const static char* _gNUMS[]={"NULL" , "1" , "2" , "3" , "4" , "5" , "6" , "0" , "7" , "8" , "9" , "#" , "@" , "½" , "&" , "+" , "%" , "^" , "=" , "*" , "$" , "€" , "£" , "(" , "[" , "<" , "{" , ")"  , "]"     , ">"    , "}"   , "." , "," , "|"  , "~" , "-" , "\'" , "\\" , "/" , "μ"    , "\u0027" , "ª"};
 
 const static char* _gSYMB[]={"NULL" , "1" , "2" , "3" , "4" , "5" , "6" , "0" , "7" , "8" , "9" , "#" , "@" , "½" , "&" , "+" , "%" , "^" , "=" , "*" , "$" , "€" , "£" , "(" , "[" , "<" , "{" , ")"  , "]"     , ">"    , "}"   , ":" , ";" , "|"  , "~" , "_" , "\"" , "`"  , "´" , "μ"    , "§"      , "º", "_Up", "_Down", "_PgUp", "_PgDn", "_BS", "_Left", "_WLeft", "_Home", " ", "_Right", "_WRight", "_End", "_Enter", "_Tab", "_Esc", "_Del", "°", "_Shift", "_SYMB", "_123abc", "_Ctrl", "_Alt" };
 
