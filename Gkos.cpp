@@ -86,7 +86,7 @@ Gkos::Gkos(uint8_t APin, uint8_t BPin, uint8_t CPin, uint8_t DPin, uint8_t EPin,
   _autoRepeat = 0;   // Repeat the character if chord pressed long enough (0 or 1)
   _autoCounter = 0;  // Typamatic delay counter (n x 10 ms)
   _gNew = false; // a new character is expected soon because new keys were pressed
-
+  _timeLapse = 10; // Read Keypad every timeLapse seconds
 
 }
 
@@ -104,21 +104,20 @@ char* Gkos::entry()
 	// GKOS Reference number based on Chord value
 const static int _gChord2_gRef[] = {0, 1, 2, 15, 3, 27, 19, 46, 4, 42, 36, 16, 33, 28, 20, 47, 5, 35, 59, 17, 32, 29, 21, 48, 7, 8, 9, 44, 10, 41, 38, 56, 6, 34, 31, 18, 43, 30, 22, 49, 23, 24, 25, 58, 26, 60, 40, 62, 11, 12, 13, 37, 14, 39, 45, 63, 50, 51, 52, 54, 53, 55, 57, 61};
 	// Parallel GKOS character sets for lower case, caps, shift (upper case), numbers and symbols
-const static char* _gChar[]={"NULL" , "a" , "u" , "c" , "i" , "e" , "r" , "t" , "h" , "g" , "j" , "n" , "\'a" , "b" , "k" , "o" , "p" , "f" , "q" , "s" , "w" , "m" , "v" , "l" , "x" , "y" , "z" , "d"  , "\'u"     , "\'e"    , "\'o"   , "." , "," , "!" , "?" , "-" , "\'" , "\\" , "/" , "ñ"    , "ü"      , "\'i", "_Up", "_Down", "_PgUp", "_PgDn", "_BS", "_Left", "_WLeft", "_Home", " ", "_Right", "_WRight", "_End", "_Enter", "_Tab", "_Esc", "_Del", "_Ins", "_Shift", "_SYMB", "_123abc", "_Ctrl", "_Alt" };
+const static char* _gChar[]={"NULL" , "a" , "u" , "c" , "i" , "e" , "r" , "t" , "h" , "g" , "j" , "n" , "\'a" , "b" , "k" , "o" , "p" , "f" , "q" , "s" , "w" , "m" , "v" , "l" , "x" , "y" , "z" , "d"  , "\'u"     , "\'e"    , "\'o"   , "." , "," , "!" , "?" , "-" , "\'" , "\\" , "/" , "enie"    , "§"      , "\'i", "_Up", "_Down", "_PgUp", "_PgDn", "_BS", "_Left", "_WLeft", "_Home", " ", "_Right", "_WRight", "_End", "_Enter", "_Tab", "_Esc", "_Del", "_Ins", "_Shift", "_SYMB", "_123abc", "_Ctrl", "_Alt" };
 
 // SHFT (Shift): (NULL +) only first 41 may differ from lower case 
-const static char* _gSHFT[]={ "NULL" , "A" , "U" , "C" , "I" , "E" , "R" , "T" , "H" , "G" , "J" , "N" , "\'A" , "B" , "K" , "O" , "P" , "F" , "Q" , "S" , "W" , "M" , "V" , "L" , "X" , "Y" , "Z" , "D"  , "\'U"     , "\'E"    , "\'O"   , "." , "," , "¡" , "¿" , "_" , "\'" , "\\" , "/" , "Ñ"    , "Ü"      , "\'I"};
+const static char* _gSHFT[]={ "NULL" , "A" , "U" , "C" , "I" , "E" , "R" , "T" , "H" , "G" , "J" , "N" , "\'A" , "B" , "K" , "O" , "P" , "F" , "Q" , "S" , "W" , "M" , "V" , "L" , "X" , "Y" , "Z" , "D"  , "\'U"     , "\'E"    , "\'O"   , "." , "," , "¡" , "¿" , "_" , "\'" , "\\" , "/" , "ENIE"    , "§"      , "\'I"};
 
 // CAPS: (NULL +) only first 41 characters are different from lower case (_gChar[])
-const static char* _gCAPS[]={ "NULL" , "A" , "U" , "C" , "I" , "E" , "R" , "T" , "H" , "G" , "J" , "N" , "\'A" , "B" , "K" , "O" , "P" , "F" , "Q" , "S" , "W" , "M" , "V" , "L" , "X" , "Y" , "Z" , "D"  , "\'U"     , "\'E"    , "\'O"   , "." , "," , "!" , "?" , "-" , "\'" , "\\" , "/" , "Ñ"    , "Ü"      , "\'I"};
+const static char* _gCAPS[]={ "NULL" , "A" , "U" , "C" , "I" , "E" , "R" , "T" , "H" , "G" , "J" , "N" , "\'A" , "B" , "K" , "O" , "P" , "F" , "Q" , "S" , "W" , "M" , "V" , "L" , "X" , "Y" , "Z" , "D"  , "\'U"     , "\'E"    , "\'O"   , "." , "," , "!" , "?" , "-" , "\'" , "\\" , "/" , "ENIE"    , "§"      , "\'I"};
 
 // NUMS: (NULL +) only first 41 may differ from lower case
-const static char* _gNUMS[]={"NULL" , "1" , "2" , "3" , "4" , "5" , "6" , "0" , "7" , "8" , "9" , "#" , "@" , "½" , "&" , "+" , "%" , "^" , "=" , "*" , "$" , "€" , "£" , "(" , "[" , "<" , "{" , ")"  , "]"     , ">"    , "}"   , "." , "," , "|"  , "~" , "-" , "\'" , "\\" , "/" , "μ"    , "\u0027" , "ª"};
+const static char* _gNUMS[]={"NULL" , "1" , "2" , "3" , "4" , "5" , "6" , "0" , "7" , "8" , "9" , "#" , "@" , "½" , "&" , "+" , "%" , "^" , "=" , "*" , "$" , "€" , "£" , "(" , "[" , "<" , "{" , ")"  , "]"     , ">"    , "}"   , "." , "," , "|"  , "~" , "-" , "\'" , "\\" , "/" , "μ"    , "§" , "ª"};
 
 const static char* _gSYMB[]={"NULL" , "1" , "2" , "3" , "4" , "5" , "6" , "0" , "7" , "8" , "9" , "#" , "@" , "½" , "&" , "+" , "%" , "^" , "=" , "*" , "$" , "€" , "£" , "(" , "[" , "<" , "{" , ")"  , "]"     , ">"    , "}"   , ":" , ";" , "|"  , "~" , "_" , "\"" , "`"  , "´" , "μ"    , "§"      , "º", "_Up", "_Down", "_PgUp", "_PgDn", "_BS", "_Left", "_WLeft", "_Home", " ", "_Right", "_WRight", "_End", "_Enter", "_Tab", "_Esc", "_Del", "°", "_Shift", "_SYMB", "_123abc", "_Ctrl", "_Alt" };
 
 // MOUSE (Mouse): (NULL +) only first 41 may differ from lower case 
-//const static char* _gMUSE[]={"NULL", "_XYM-40,-40", "Mb", "_XYM-40,40", "_XYM40,-40","Me", "_XYM40,40", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "th", "that ", "the ", "of ", ".", ",", "!", "?", "-", "\'", "\\", "/", "and ", "§", "to ", "_Up", "_Down", "_PgUp", "_PgDn", "_BS", "_Left", "_WLeft", "_Home", " ", "_Right", "_WRight", "_End", "_Enter", "_Tab", "_Esc", "_Del", "_Ins", "_Shift", "_SYMB", "_123abc", "_Ctrl", "_Alt" };
 const static char* _gMUSE[]={"NULL", "_XYM-15,-15", "_XYM-15,0", "_XYM-15,15", "_XYM15,-15","_XYM15,0", "_XYM15,15", "_XYM50,-50", "_XYM100,-100", "_MOUSE_SLOW", "", "_XYM50,50", "", "", "_XYM100,100", "_XYM-50,-50", "_XYM-100,-100", "", "", "_XYM-50,50", "", "", "_XYM-100,100", "_MOUSE_RIGHT", "_Down", "", "_Up", "_MOUSE_LEFT", "_PgDn", "", "_PgUp", "", "", "", "", "", "", "", "", "", "", "", "_XYM0,-15", "_XYM0,15", "_XYM0,-100", "_XYM0,100", "_XYM-100,0", "_Left", "_WLeft", "_Home", "_XYM100,0", "_Right", "_WRight", "_End", "_MOUSE_LEFT", "", "_MOUSE_RIGHT", "_Del", "_Ins", "_MOUSE_SELECT", "_SYMB", "_123abc", "_Ctrl", "_Alt" };
 
 	// For other native character tables, see gkos.com
@@ -161,15 +160,15 @@ const static char* _gMUSE[]={"NULL", "_XYM-15,-15", "_XYM-15,0", "_XYM-15,15", "
 	      {_shifts = 0; digitalWrite(numPin, LOW);return "";}
 	      break;
 	    case 16: //esta en modo Mouse
-	      {_shifts = 0; return "";}
+	      {_timeLapse = 10; _shifts = 0; return "";}
 	      break;
 	    default:
 	                {
 			  switch (_gRef) //De acuerdo a la entrada previa
 			                 //(_gref) se obtiene el modo a tomar
 			    {
-			    case 59:  //Tecla Shift pasamos a modo Mouse
-			      {_shifts = 16; return "";}
+			    case 59:  //Tecla Shift pasamos a modo Mouse {_timeLapse = 2; _shifts = 16; return "_MOUSE_MODE";}
+			      {_gRef = 61; return "_MOUSE_MODE";}
 			      break;
 			    case 44:  //Tecla Arriba _Up pasamos a modo F1 F2... F16
 			      break;
@@ -213,10 +212,10 @@ const static char* _gMUSE[]={"NULL", "_XYM-15,-15", "_XYM-15,0", "_XYM-15,15", "
 		gOutput[0] = (char*)_gSYMB[_gChord2_gRef[_gChord]];
 	break;
 
-	case 16:
-	// Mouse
-		gOutput[0] = (char*)_gMUSE[_gChord2_gRef[_gChord]];
-	break;
+	//case 16:
+	//// Mouse
+	//	gOutput[0] = (char*)_gMUSE[_gChord2_gRef[_gChord]];
+	//break;
 	
 	case 2:
 	// Caps	
@@ -253,7 +252,7 @@ bool Gkos::gScanKeys()
 {
   // Return empty immediately if 10 ms not elapsed
   _time = millis();
- if ((_time - _previousTime) >= (10 + 64 * _autoRepeat)){ // Only read keypad state every 10 ms
+ if ((_time - _previousTime) >= (_timeLapse + 64 * _autoRepeat)){ // Only read keypad state every 10 ms
 
   if (digitalRead(_key_pins[1]) == LOW){_key_down[1] = 1;} else {_key_down[1] = 0;}
   if (digitalRead(_key_pins[2]) == LOW){_key_down[2] = 1;} else {_key_down[2] = 0;}
